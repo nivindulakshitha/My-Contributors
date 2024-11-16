@@ -59,20 +59,17 @@ async function fetchRepoDetails(repoId: string) {
 }
 
 async function generateSVG(avatars: string[]): Promise<string> {
-	const maxAvatars = 10; // Maximum number of avatars to display
-	const circleSize = 64; // Diameter of each circle
-	const space = 5; // Space between circles
+	const maxAvatars = 10;
+	const circleSize = 64;
+	const space = 5;
 	const svgWidth = (circleSize * Math.min(avatars.length, maxAvatars)) + space * (Math.min(avatars.length, maxAvatars) - 1);
 	const svgHeight = circleSize;
 
-	// Convert avatar URLs to base64
+
 	const base64Avatars = await Promise.all(
 		avatars.slice(0, maxAvatars).map(async (avatar) => await imageUrlToBase64(avatar))
 	);
 
-	console.log(base64Avatars);
-
-	// Create `defs` section for patterns
 	const defs = base64Avatars
 		.map(
 			(base64, index) => `
@@ -87,7 +84,7 @@ async function generateSVG(avatars: string[]): Promise<string> {
 		)
 		.join("\n");
 
-	// Create circles with patterns
+
 	const circles = base64Avatars
 		.map(
 			(_, index) => `
@@ -103,9 +100,9 @@ async function generateSVG(avatars: string[]): Promise<string> {
 		)
 		.join("\n");
 
-	// Combine everything into an SVG
+
 	return `
-<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <defs>
         ${defs}
     </defs>
@@ -118,17 +115,11 @@ import axios from "axios";
 
 async function imageUrlToBase64(url: string): Promise<string> {
 	try {
-		// Fetch the image as an array buffer
 		const response = await axios.get(url, { responseType: "arraybuffer" });
-
-		// Convert the buffer to a base64 string
 		const base64 = Buffer.from(response.data, "binary").toString("base64");
-
-		// Determine the image MIME type
 		const mimeType = response.headers["content-type"];
-
-		// Return the base64 image with the data URI format
 		return `data:${mimeType};base64,${base64}`;
+
 	} catch (error) {
 		console.error("Error converting image to base64:", error);
 		throw error;
