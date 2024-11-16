@@ -111,8 +111,6 @@ async function generateSVG(avatars: string[]): Promise<string> {
                 cx="${circleSize / 2 + index * (circleSize + space)}"
                 cy="${circleSize / 2}"
                 r="${circleSize / 2 - 1}"
-                stroke="#0d1117"
-                stroke-width="3"
                 fill="url(#fill${index})"
             />
         `

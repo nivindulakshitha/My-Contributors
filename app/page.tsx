@@ -1,13 +1,19 @@
 "use client";
-import { InputArea } from "@/components/inputArea";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import UserCard from "@/components/userCard";
-import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG, contributors} from "@/utils/app";
+import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG, contributors, username } from "@/utils/app";
+import { Check, Copy, Search } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
 	const [fetchedContributors, setContributors] = useState<object[]>([]);
+	const [isProcessing, setIsProcessing] = useState<boolean>(false)
+	const [isCopible, setIsCopible] = useState<boolean>(false)
+	const [isCoping, setIsCoping] = useState<boolean>(false);
 
 	const submitHandler = async (e: React.MouseEvent) => {
+		setIsProcessing(true);
 		e.preventDefault();
 		const inputField = document.getElementById("inputField") as HTMLInputElement;
 		const inputValue = inputField.value;
@@ -17,12 +23,35 @@ export default function Home() {
 		await Promise.all(promises);
 
 		setContributors(contributors);
+		setIsProcessing(false);
+		if (username) {
+			setIsCopible(true);
+		} else {
+			setIsCopible(false);
+		}
+	}
+
+	const copyLink = () => {
+		setIsCoping(true);
+		const url = `https://my-crews.vercel.app/api/crew?username=${username}`;
+		navigator.clipboard.writeText(url);
+
+		setTimeout(() => {
+			setIsCoping(false);
+		}, 3000);
 	}
 
 	return (
 		<main className="grid grid-rows-3 h-screen w-6/12 m-auto gap-4 pt-4 pb-4">
 			<div className="flex justify-center items-center">
-				<InputArea />
+				<div className="flex w-full max-w-sm items-center gap-2">
+					<Input type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
+					{!isCopible ? (<Button variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
+						<Search size={16} /> Search
+					</Button>) : (<Button variant="outline" type="submit" onClick={copyLink}>
+							{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
+					</Button>)}
+				</div>
 			</div>
 			<div id="svg-holder" className="row-span-2 pb-4">
 				{fetchedContributors.map((contributor: any) => (
