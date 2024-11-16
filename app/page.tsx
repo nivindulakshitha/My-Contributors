@@ -12,7 +12,7 @@ export default function Home() {
 		await Promise.all(promises);
 
 		document.querySelector("svg")?.remove();
-		const svg = generateSVG(userAvatars);
+		const svg = await generateSVG(userAvatars);
 
 		const div = document.querySelector("#svg-holder");
 		const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml").documentElement;

@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	const promises = repoIds.map(repoId => fetchRepoDetails(repoId));
 	await Promise.all(promises);
-	const svg = generateSVG(userAvatars);
+	const svg = await generateSVG(userAvatars);
 	
 	res.setHeader('Content-Type', 'image/svg+xml');
 	res.status(200).send(svg);

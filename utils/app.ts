@@ -58,38 +58,52 @@ async function fetchRepoDetails(repoId: string) {
 		.catch(err => console.error(err));
 }
 
-function generateSVG(avatars: any[]) {
-	const maxAvatars = 10;
-	const svgWidth = (64 * Math.min(avatars.length, maxAvatars)) + 10 * (avatars.slice(0, maxAvatars).length - 1);
-	const svgHeight = 64;
-	const space = 5;
+async function generateSVG(avatars: string[]): Promise<string> {
+	const maxAvatars = 10; // Maximum number of avatars to display
+	const circleSize = 64; // Diameter of each circle
+	const space = 5; // Space between circles
+	const svgWidth = (circleSize * Math.min(avatars.length, maxAvatars)) + space * (Math.min(avatars.length, maxAvatars) - 1);
+	const svgHeight = circleSize;
 
-	const defs = avatars
-		.slice(0, maxAvatars)
+	// Convert avatar URLs to base64
+	const base64Avatars = await Promise.all(
+		avatars.slice(0, maxAvatars).map(async (avatar) => await imageUrlToBase64(avatar))
+	);
+
+	console.log(base64Avatars);
+
+	// Create `defs` section for patterns
+	const defs = base64Avatars
 		.map(
-			(avatar, index) => `
-            <pattern id="fill${index}" x="0" y="0" width="64" height="64" patternUnits="userSpaceOnUse">
+			(base64, index) => `
+            <pattern id="fill${index}" x="0" y="0" width="1" height="1" patternUnits="objectBoundingBox">
                 <image
-                    width="64"
-                    height="64"
-                    href="${avatar}"
+                    width="${circleSize}"
+                    height="${circleSize}"
+                    href="${base64}"
                 />
             </pattern>
         `
 		)
 		.join("\n");
 
-	const circles = avatars
-		.slice(0, maxAvatars)
+	// Create circles with patterns
+	const circles = base64Avatars
 		.map(
-			(avatar, index) => `
-            <svg x="${(index * 64) + (space * index)}" y="0" width="64" height="64">
-                <circle cx="32" cy="32" r="32" stroke="#0d1117" strokeWidth="3" fill="url(#fill${index})" />
-            </svg>
+			(_, index) => `
+            <circle
+                cx="${circleSize / 2 + index * (circleSize + space)}"
+                cy="${circleSize / 2}"
+                r="${circleSize / 2 - 1}"
+                stroke="#0d1117"
+                stroke-width="3"
+                fill="url(#fill${index})"
+            />
         `
 		)
 		.join("\n");
 
+	// Combine everything into an SVG
 	return `
 <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
     <defs>
@@ -99,5 +113,27 @@ function generateSVG(avatars: any[]) {
 </svg>
     `;
 }
+
+import axios from "axios";
+
+async function imageUrlToBase64(url: string): Promise<string> {
+	try {
+		// Fetch the image as an array buffer
+		const response = await axios.get(url, { responseType: "arraybuffer" });
+
+		// Convert the buffer to a base64 string
+		const base64 = Buffer.from(response.data, "binary").toString("base64");
+
+		// Determine the image MIME type
+		const mimeType = response.headers["content-type"];
+
+		// Return the base64 image with the data URI format
+		return `data:${mimeType};base64,${base64}`;
+	} catch (error) {
+		console.error("Error converting image to base64:", error);
+		throw error;
+	}
+}
+
 
 export { fetchRepos, fetchRepoDetails, generateSVG, repoIds, userAvatars, repoCount, username };
