@@ -27,7 +27,7 @@ export default function Home() {
 				<input type="text" id="inputField" placeholder="Enter text here" />
 				<button onClick={submitHandler}>Submit</button>
 			</div>
-			<div id="svg-holder" className="border-2 row-span-2">
+			<div id="svg-holder" className="row-span-2">
 				<UserCard username="exampleUsername" />
 			</div>
 		</main>

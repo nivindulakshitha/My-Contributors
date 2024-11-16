@@ -1,0 +1,19 @@
+.card {
+	@apply grid grid-cols-6 w-full p-4 bg-black bg-opacity-10 border-[1px] border-border rounded-md gap-2;
+}
+
+.card-image {
+	@apply flex justify-center col-span-1;
+}
+
+.card-image img {
+	@apply w-16 h-16 rounded-full;
+}
+
+.card-content {
+	@apply col-span-5;
+}
+
+.card-content h2 {
+	@apply text-lg font-semibold text-slate-100;
+}
