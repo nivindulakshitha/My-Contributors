@@ -38,7 +38,7 @@ export default function Home() {
 
 		setTimeout(() => {
 			setIsCoping(false);
-		}, 3000);
+		}, 1000);
 	}
 
 	return (

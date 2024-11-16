@@ -81,7 +81,3 @@ body {
     transform: rotate(360deg);
   }
 }
-
-input {
-  @apply outline-none focus:ring-0;
-}

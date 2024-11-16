@@ -8,6 +8,15 @@ module.exports = {
 						key: "Content-Security-Policy",
 						value: "img-src 'self' https://avatars.githubusercontent.com data:;",
 					},
+
+					{
+						key: "Content-Security-Policy",
+						value: "img-src 'self' https://github.githubassets.com data:;",
+					},
+					{
+						key: "Content-Security-Policy",
+						value: "img-src 'self' https://github.com data:;",
+					},
 				],
 			},
 		];
@@ -17,6 +26,12 @@ module.exports = {
 		remotePatterns: [{
 			protocol: 'https',
 			hostname: 'avatars.githubusercontent.com',
-		}],
+		},
+		{
+			protocol: 'https',
+			hostname: 'github.githubassets.com',
+		}
+
+		],
 	}
 };
