@@ -25,10 +25,11 @@ export default function Home() {
 				<input type="text" id="inputField" placeholder="Enter text here" />
 				<button onClick={submitHandler}>Submit </button>
 			</div>
-			<div id="svg-holder" className="row-span-2">
+			<div id="svg-holder" className="row-span-2 pb-4">
 				{fetchedContributors.map((contributor: any) => (
 					<UserCard key={contributor.login} username={contributor.login} details={contributor} />
 				))}
+
 				{!(fetchedContributors.length > 0) && (
 					<svg xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="1" clipRule="evenodd" viewBox="0 0 24 24" id="github">
 						<g transform="translate(-40 -40)">

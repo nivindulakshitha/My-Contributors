@@ -17,7 +17,7 @@ const UserCard = ({ username, details }: { username: string, details: any }) => 
 					day: 'numeric',
 					year: 'numeric'
 				})}</h6>
-				<p>{details.bio ? details.bio : null}</p>
+				<p>{details.bio ? details.bio : null} </p>
 			</div>
 		</div>
 	)
