@@ -53,7 +53,7 @@ export default function Home() {
 					</Button>)}
 				</div>
 			</div>
-			<div id="svg-holder" className="row-span-6 overflow-auto pe-3">
+			<div id="svg-holder" className="pb-2 row-span-6 overflow-auto pe-3">
 				{fetchedContributors.map((contributor: any) => (
 					<UserCard key={contributor.login} username={contributor.login} details={contributor} />
 				))}
