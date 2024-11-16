@@ -1,5 +1,5 @@
 .card {
-	@apply grid grid-cols-6 w-full p-4 border-[1px] border-border-color rounded-md gap-2 items-center;
+	@apply grid grid-cols-3 sm:grid-cols-6 w-full p-4 border-[1px] border-border-color rounded-md gap-2 items-center;
 }
 
 .card-image {
@@ -11,11 +11,11 @@
 }
 
 .card-content {
-	@apply col-span-5 text-left;
+	@apply col-span-2 sm:col-span-5 text-left;
 }
 
 .card-content h2.link {
-	@apply text-lg font-semibold text-link-color;
+	@apply text-lg font-semibold text-link-color truncate;
 }
 
 .card-content h6 {

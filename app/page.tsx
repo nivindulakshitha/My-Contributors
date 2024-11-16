@@ -42,8 +42,8 @@ export default function Home() {
 	}
 
 	return (
-		<main className="grid grid-rows-3 h-screen w-6/12 m-auto gap-4 pt-4 pb-4">
-			<div className="flex justify-center items-center">
+		<main className="grid grid-rows-8 h-screen w-4/5 m-auto gap-4 pt-4 pb-4 lg:w-6/12">
+			<div className="flex row-span-2 justify-center items-center">
 				<div className="flex w-full max-w-sm items-center gap-2">
 					<Input type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
 					{!isCopible ? (<Button variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
@@ -53,7 +53,7 @@ export default function Home() {
 					</Button>)}
 				</div>
 			</div>
-			<div id="svg-holder" className="row-span-2 pb-4">
+			<div id="svg-holder" className="row-span-6 overflow-auto pe-3">
 				{fetchedContributors.map((contributor: any) => (
 					<UserCard key={contributor.login} username={contributor.login} details={contributor} />
 				))}
