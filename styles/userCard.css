@@ -1,9 +1,9 @@
 .card {
-	@apply grid grid-cols-6 w-full p-4 bg-black bg-opacity-10 border-[1px] border-border rounded-md gap-2;
+	@apply grid grid-cols-6 w-full p-4 border-[1px] border-border-color rounded-md gap-2;
 }
 
 .card-image {
-	@apply flex justify-center col-span-1;
+	@apply bg-black bg-opacity-20 border-[1px] border-border-color w-16 h-16 rounded-full col-span-1 mx-auto;
 }
 
 .card-image img {
@@ -11,9 +11,9 @@
 }
 
 .card-content {
-	@apply col-span-5;
+	@apply col-span-5 self-start text-left;
 }
 
-.card-content h2 {
-	@apply text-lg font-semibold text-slate-100;
+.card-content h2.link {
+	@apply text-lg font-semibold text-link-color;
 }

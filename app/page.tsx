@@ -1,6 +1,7 @@
 "use client";
 import UserCard from "@/components/userCard";
 import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG} from "@/utils/app";
+import { useState } from "react";
 
 export default function Home() {
 	const submitHandler = async (e: React.MouseEvent) => {

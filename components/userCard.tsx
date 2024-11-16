@@ -9,7 +9,7 @@ const UserCard = ({ username }: { username: string }) => {
 				<Image width={64} height={64} src={`https://avatars.githubusercontent.com/u/88942532?v=4`} alt="" />
 			</div>
 			<div className="card-content">
-				<h1>{username}</h1>
+				<h2 className='link'>{username}</h2>
 			</div>
 		</div>
 	)
