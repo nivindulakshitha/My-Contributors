@@ -1,4 +1,5 @@
 "use client";
+import UserCard from "@/components/userCard";
 import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG} from "@/utils/app";
 
 export default function Home() {
@@ -14,9 +15,9 @@ export default function Home() {
 		document.querySelector("svg")?.remove();
 		const svg = await generateSVG(userAvatars);
 
-		const div = document.querySelector("#svg-holder");
+/* 		const div = document.querySelector("#svg-holder");
 		const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml").documentElement;
-		div?.appendChild(svgElement);
+		div?.appendChild(svgElement); */
 	}
 
 	return (
@@ -27,7 +28,7 @@ export default function Home() {
 				<button onClick={submitHandler}>Submit</button>
 			</div>
 			<div id="svg-holder" className="border-2 row-span-2">
-				
+				<UserCard username="exampleUsername" />
 			</div>
 		</main>
 	);
