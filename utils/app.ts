@@ -78,9 +78,9 @@ async function fetchRepoDetails(repoId: string) {
 }
 
 async function generateSVG(avatars: string[]): Promise<string> {
-	const maxAvatars = 10;
+	const maxAvatars = 50;
 	const circleSize = 64;
-	const space = 5;
+	const space = 10;
 	const svgWidth = (circleSize * Math.min(avatars.length, maxAvatars)) + space * (Math.min(avatars.length, maxAvatars) - 1);
 	const svgHeight = circleSize;
 
