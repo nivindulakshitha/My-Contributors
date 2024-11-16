@@ -60,8 +60,9 @@ async function fetchRepoDetails(repoId: string) {
 
 function generateSVG(avatars: any[]) {
 	const maxAvatars = 10;
-	const svgWidth = 64 * Math.min(avatars.length, maxAvatars);
+	const svgWidth = (64 * Math.min(avatars.length, maxAvatars)) + 10 * (avatars.slice(0, maxAvatars).length - 1);
 	const svgHeight = 64;
+	const space = 5;
 
 	const defs = avatars
 		.slice(0, maxAvatars)
@@ -82,7 +83,7 @@ function generateSVG(avatars: any[]) {
 		.slice(0, maxAvatars)
 		.map(
 			(avatar, index) => `
-            <svg x="${index * 64}" y="0" width="64" height="64">
+            <svg x="${(index * 64) + (space * index)}" y="0" width="64" height="64">
                 <circle cx="32" cy="32" r="32" stroke="#0d1117" strokeWidth="3" fill="url(#fill${index})" />
             </svg>
         `
