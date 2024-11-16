@@ -2,11 +2,14 @@ let username: string = "";
 let repoIds: string[] = [];
 let userAvatars: string[] = [];
 let repoCount: number = 0;
+let contributors: object[] = [];
 
 async function fetchRepos(username_: string) {
 	repoIds = [];
 	userAvatars = [];
 	repoCount = 0;
+	contributors = [];
+
 	username = username_;
 	const url = `https://api.github.com/users/${username}/repos`;
 
@@ -35,6 +38,21 @@ async function fetchRepos(username_: string) {
 		.catch(err => console.error(err));
 }
 
+async function fetchContributors(contributor: any) {
+	const url = `https://api.github.com/users/${contributor.login}`;
+
+	await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
+		},
+	})
+		.then(res => res.json())
+		.then(data => {
+			contributors.push(data);
+		})
+		.catch(err => console.error(err));
+}
+
 async function fetchRepoDetails(repoId: string) {
 	const url = `https://api.github.com/repos/${username}/${repoId}/contributors`;
 
@@ -46,11 +64,12 @@ async function fetchRepoDetails(repoId: string) {
 		.then(res => res.json())
 		.then(data => {
 			if (data.length > 1) {
-				data.forEach((contributor: any) => {
+				data.forEach(async (contributor: any) => {
 					const avatarUrl = contributor.avatar_url;
 
 					if (contributor.login != username && !userAvatars.includes(avatarUrl)) {
 						userAvatars.push(avatarUrl);
+						await fetchContributors(contributor);
 					}
 				});
 			}
@@ -127,4 +146,4 @@ async function imageUrlToBase64(url: string): Promise<string> {
 }
 
 
-export { fetchRepos, fetchRepoDetails, generateSVG, repoIds, userAvatars, repoCount, username };
+export { fetchRepos, fetchRepoDetails, generateSVG, repoIds, userAvatars, repoCount, username, contributors };

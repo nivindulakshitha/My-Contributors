@@ -7,7 +7,7 @@
 }
 
 .card-image img {
-	@apply w-16 h-16 rounded-full;
+	@apply rounded-full;
 }
 
 .card-content {
@@ -16,4 +16,16 @@
 
 .card-content h2.link {
 	@apply text-lg font-semibold text-link-color;
+}
+
+.card-content h6 {
+	@apply text-sm text-secondary;
+}
+
+.card-content p {
+	@apply text-base truncate;
+}
+
+#svg-holder {
+	@apply flex flex-col gap-4;
 }
