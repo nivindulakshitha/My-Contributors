@@ -1,4 +1,5 @@
 "use client";
+import { InputArea } from "@/components/inputArea";
 import UserCard from "@/components/userCard";
 import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG, contributors} from "@/utils/app";
 import { useState } from "react";
@@ -21,9 +22,7 @@ export default function Home() {
 	return (
 		<main className="grid grid-rows-3 h-screen w-6/12 m-auto gap-4 pt-4 pb-4">
 			<div className="flex justify-center items-center">
-				<label htmlFor="inputField">Input:</label>
-				<input type="text" id="inputField" placeholder="Enter text here" />
-				<button onClick={submitHandler}>Submit </button>
+				<InputArea />
 			</div>
 			<div id="svg-holder" className="row-span-2 pb-4">
 				{fetchedContributors.map((contributor: any) => (
