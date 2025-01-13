@@ -52,16 +52,18 @@ export default function Home() {
 	return (
 		<main className="grid grid-rows-8 h-screen w-4/5 m-auto gap-4 pt-4 pb-4 lg:w-6/12">
 			<div className="flex row-span-2 justify-center items-center">
-				<div className="flex w-full max-w-sm items-center gap-2">
+				<div className="flex w-full max-w-sm items-center gap-2 flex-col sm:flex-row">
 					<Input type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
-					{!isCopible ? (<Button variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
-						{isProcessing ? <LoaderCircle className="animate-spin" /> : (<Search size={16} />)} Search
-					</Button>) : (<Button variant="outline" type="submit" onClick={copyLink}>
-						{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
-					</Button>)}
-					<Button variant="outline" type="submit" disabled={isProcessing} onClick={clearInput}>
-						<Trash size={16} /> Clear
-					</Button>
+					<div className="flex flex-row gap-2 w-full sm:w-auto justify-center items-center">
+						{!isCopible ? (<Button className="" variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
+							{isProcessing ? <LoaderCircle className="animate-spin" /> : (<Search size={16} />)} Search
+						</Button>) : (<Button className="" variant="outline" type="submit" onClick={copyLink}>
+							{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
+						</Button>)}
+						<Button className="" variant="outline" type="submit" disabled={isProcessing} onClick={clearInput}>
+							<Trash size={16} /> Clear
+						</Button>
+					</div>
 				</div>
 			</div>
 			<div id="svg-holder" className="pb-2 row-span-6 overflow-auto pe-3">
