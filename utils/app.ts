@@ -67,10 +67,14 @@ async function fetchRepoDetails(repoId: string) {
 				data.forEach(async (contributor: any) => {
 					const avatarUrl = contributor.avatar_url;
 
-					if (contributor.login != username && !userAvatars.includes(avatarUrl)) {
-						userAvatars.push(avatarUrl);
-						await fetchContributors(contributor);
-					}
+					if (
+                        contributor.type !== "Bot" &&
+                        contributor.login !== username &&
+                        !userAvatars.includes(avatarUrl)
+                    ) {
+                        userAvatars.push(avatarUrl);
+                        await fetchContributors(contributor);
+                    }
 				});
 			}
 		})
