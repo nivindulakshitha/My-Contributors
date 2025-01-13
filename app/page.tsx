@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import UserCard from "@/components/userCard";
 import { fetchRepos, repoIds, userAvatars, fetchRepoDetails, generateSVG, contributors, username } from "@/utils/app";
-import { Check, Copy, LoaderCircle, Search } from "lucide-react";
+import { Check, Copy, LoaderCircle, Search, Trash } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
 	const [fetchedContributors, setContributors] = useState<object[]>([]);
 	const [isProcessing, setIsProcessing] = useState<boolean>(false)
-	const [isCopible, setIsCopible] = useState<boolean>(false)
+	const [isCopible, setIsCopyable] = useState<boolean>(false)
 	const [isCoping, setIsCoping] = useState<boolean>(false);
 
 	const submitHandler = async (e: React.MouseEvent) => {
@@ -25,10 +25,18 @@ export default function Home() {
 		setContributors(contributors);
 		setIsProcessing(false);
 		if (username) {
-			setIsCopible(true);
+			setIsCopyable(true);
 		} else {
-			setIsCopible(false);
+			setIsCopyable(false);
 		}
+	}
+
+	const clearInput = () => {
+		const inputField = document.getElementById("inputField") as HTMLInputElement;
+		inputField.value = "";
+		setContributors([]);
+		setIsCopyable(false);
+		setIsCoping(false);
 	}
 
 	const copyLink = () => {
@@ -49,8 +57,11 @@ export default function Home() {
 					{!isCopible ? (<Button variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
 						{isProcessing ? <LoaderCircle className="animate-spin" /> : (<Search size={16} />)} Search
 					</Button>) : (<Button variant="outline" type="submit" onClick={copyLink}>
-							{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
+						{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
 					</Button>)}
+					<Button variant="outline" type="submit" disabled={isProcessing} onClick={clearInput}>
+						<Trash size={16} /> Clear
+					</Button>
 				</div>
 			</div>
 			<div id="svg-holder" className="pb-2 row-span-6 overflow-auto pe-3">
