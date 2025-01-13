@@ -65,16 +65,16 @@ async function fetchRepoDetails(repoId: string) {
 		.then(data => {
 			if (data.length > 1) {
 				data.forEach(async (contributor: any) => {
-					const avatarUrl = contributor.avatar_url;
-
 					if (
-                        contributor.type !== "Bot" &&
-                        contributor.login !== username &&
-                        !userAvatars.includes(avatarUrl)
-                    ) {
-                        userAvatars.push(avatarUrl);
-                        await fetchContributors(contributor);
-                    }
+						contributor.type === "User" &&
+						contributor.login.toLowerCase() != username.toLowerCase()
+					) {
+						const avatarUrl = contributor.avatar_url;
+						if (!userAvatars.includes(avatarUrl)) {
+							userAvatars.push(avatarUrl);
+							await fetchContributors(contributor);
+						}
+					}
 				});
 			}
 		})
