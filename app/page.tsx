@@ -9,7 +9,7 @@ import { useState } from "react";
 export default function Home() {
 	const [fetchedContributors, setContributors] = useState<object[]>([]);
 	const [isProcessing, setIsProcessing] = useState<boolean>(false)
-	const [isCopible, setIsCopyable] = useState<boolean>(false)
+	const [isCopyable, setIsCopyable] = useState<boolean>(false)
 	const [isCoping, setIsCoping] = useState<boolean>(false);
 
 	const submitHandler = async (e: React.MouseEvent) => {
@@ -55,7 +55,7 @@ export default function Home() {
 				<div className="flex w-full max-w-sm items-center gap-2 flex-col sm:flex-row">
 					<Input type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
 					<div className="flex flex-row gap-2 w-full sm:w-auto justify-center items-center">
-						{!isCopible ? (<Button className="" variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
+						{!isCopyable ? (<Button className="" variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
 							{isProcessing ? <LoaderCircle className="animate-spin" /> : (<Search size={16} />)} Search
 						</Button>) : (<Button className="" variant="outline" type="submit" onClick={copyLink}>
 							{isCoping ? <Check /> : (<Copy size={16} />)} Copy Link
