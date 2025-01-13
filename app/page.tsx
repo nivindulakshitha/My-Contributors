@@ -53,7 +53,7 @@ export default function Home() {
 		<main className="grid grid-rows-8 h-screen w-4/5 m-auto gap-4 pt-4 pb-4 lg:w-6/12">
 			<div className="flex row-span-2 justify-center items-center">
 				<div className="flex w-full max-w-sm items-center gap-2 flex-col sm:flex-row">
-					<Input type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
+					<Input spellCheck={false} className="outline-none ring-0 border-gray-500 border-opacity-30 !bg-transparent focus-visible:ring-offset-0 focus-visible:shadow-none" type="text" placeholder="GitHub username" id="inputField" disabled={isProcessing} />
 					<div className="flex flex-row gap-2 w-full sm:w-auto justify-center items-center">
 						{!isCopyable ? (<Button className="" variant="outline" type="submit" disabled={isProcessing} onClick={submitHandler}>
 							{isProcessing ? <LoaderCircle className="animate-spin" /> : (<Search size={16} />)} Search
