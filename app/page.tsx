@@ -41,7 +41,7 @@ export default function Home() {
 
 	const copyLink = () => {
 		setIsCoping(true);
-		const url = `https://my-crews.vercel.app/api/crew?username=${username}`;
+		const url = `https://githubcollab.vercel.app/api/crew?username=${username}`;
 		navigator.clipboard.writeText(url);
 
 		setTimeout(() => {
