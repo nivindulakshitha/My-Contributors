@@ -12,35 +12,35 @@ My Contributors is a GitHub crew generator that allows you to fetch and display 
 ## Installation
 
 1. Clone the repository:
-	```sh
-	git clone https://github.com/your-username/my-contributors.git
-	```
+    ```sh
+    git clone https://github.com/your-username/my-contributors.git
+    ```
 2. Navigate to the project directory:
-	```sh
-	cd my-contributors
-	```
+    ```sh
+    cd my-contributors
+    ```
 3. Install dependencies:
-	```sh
-	npm install
-	```
+    ```sh
+    npm install
+    ```
 
 ## Usage
 
 1. Start the development server:
-	```sh
-	npm run dev
-	```
+    ```sh
+    npm run dev
+    ```
 2. Open your browser and navigate to `http://localhost:3000`.
 
 ## Project Structure
 
-- `app/layout.tsx`: Defines the root layout of the application.
-- `app/page.tsx`: Contains the main page component and logic for fetching and displaying GitHub user data.
-- `components/userCard.tsx`: Component for displaying user information in a card format.
-- `components/ui/input.tsx`: Custom input component.
-- `components/inputArea.tsx`: Component for the input area where users can enter a GitHub username.
-- `tailwind.config.ts`: Tailwind CSS configuration file.
-- `components.json`: Configuration file for component aliases and settings.
+- [layout.tsx](http://_vscodecontentref_/1): Defines the root layout of the application.
+- [page.tsx](http://_vscodecontentref_/2): Contains the main page component and logic for fetching and displaying GitHub user data.
+- [userCard.tsx](http://_vscodecontentref_/3): Component for displaying user information in a card format.
+- [input.tsx](http://_vscodecontentref_/4): Custom input component.
+- [inputArea.tsx](http://_vscodecontentref_/5): Component for the input area where users can enter a GitHub username.
+- [tailwind.config.ts](http://_vscodecontentref_/6): Tailwind CSS configuration file.
+- [components.json](http://_vscodecontentref_/7): Configuration file for component aliases and settings.
 
 ## Example
 
