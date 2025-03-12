@@ -67,6 +67,10 @@ async function fetchRepoDetails(repoId: string) {
 		.then(data => {
 			if (data.length > 1) {
 				data.forEach(async (contributor: any) => {
+					if (userAvatars.length === 10) {
+						return;
+					}
+					
 					if (
 						contributor.type === "User" &&
 						contributor.login.toLowerCase() != username.toLowerCase()
