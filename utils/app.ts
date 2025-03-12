@@ -11,7 +11,7 @@ async function fetchRepos(username_: string) {
 	contributors = [];
 
 	username = username_;
-	const url = `https://api.github.com/users/${username}/repos`;
+	const url = `https://api.github.com/users/${username}/repos?per_page=100`;
 
 	await fetch(url, {
 		headers: {
@@ -24,6 +24,8 @@ async function fetchRepos(username_: string) {
 
 			data.forEach((repo: any) => {
 				const id = repo.name as string;
+
+				console.log(`Repo name: ${repo.name}, Forked: ${repo.fork}`);
 
 				if (!repoIds.includes(id) && repo.name !== username) {
 					repoIds.push(id);
