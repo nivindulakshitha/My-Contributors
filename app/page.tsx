@@ -5,7 +5,6 @@ import UserCard from "@/components/userCard";
 import {
 	fetchRepos,
 	repoIds,
-	userAvatars,
 	fetchRepoDetails,
 	contributors,
 	username,
@@ -29,10 +28,10 @@ export default function Home() {
 		await fetchRepos(inputValue);
 
 		const promises = repoIds.map((repoId) => fetchRepoDetails(repoId));
-		const fetchedDetails = await Promise.all(promises);
+		await Promise.all(promises);
 
 		// Ensure new array reference
-		setContributors([...contributors]);
+		setContributors(Object.values(contributors));
 		setIsProcessing(false);
 
 		if (username) {
