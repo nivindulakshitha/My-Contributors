@@ -1,14 +1,27 @@
 let username: string = "";
 let repoIds: string[] = [];
-let userAvatars: string[] = [];
+let userAvatars: { [key: string]: string } = {};
 let repoCount: number = 0;
-let contributors: object[] = [];
+
+interface Contributor {
+	login: string;
+	avatar_url: string;
+	url: string;
+	[type: string]: any;
+}
+
+let contributors: { [key: string]: Contributor } = {};
+let excepts: string[] = [];
+
+function setExcepts(excepts_: string[]) {
+	excepts = excepts_;
+}
 
 async function fetchRepos(username_: string) {
 	repoIds = [];
-	userAvatars = [];
+	userAvatars = {};
 	repoCount = 0;
-	contributors = [];
+	contributors = {};
 
 	username = username_;
 	const url = `https://api.github.com/users/${username}/repos?per_page=100`;
@@ -23,14 +36,11 @@ async function fetchRepos(username_: string) {
 			repoCount = data.length;
 
 			data.forEach((repo: any) => {
-				const id = repo.name as string;
+				const id = repo.name.toLowerCase() as string;
 
-				console.log(`Repo name: ${repo.name}, Forked: ${repo.fork}`);
-
-				if (!repoIds.includes(id) && repo.name !== username) {
+				if (!excepts.includes(id) && !repoIds.includes(id) && repo.name !== username) {
 					repoIds.push(id);
 				} else {
-					console.log("Repo already exists");
 					repoCount--;
 				}
 			});
@@ -50,7 +60,7 @@ async function fetchContributors(contributor: any) {
 	})
 		.then(res => res.json())
 		.then(data => {
-			contributors.push(data);
+			contributors[contributor.login] = data;
 		})
 		.catch(err => console.error(err));
 }
@@ -67,17 +77,18 @@ async function fetchRepoDetails(repoId: string) {
 		.then(data => {
 			if (data.length > 1) {
 				data.forEach(async (contributor: any) => {
-					if (userAvatars.length === 10) {
+					if (Object.keys(userAvatars).length === 10) {
 						return;
 					}
-					
+
 					if (
+						!excepts.includes(contributor.login.toLowerCase()) &&
 						contributor.type === "User" &&
 						contributor.login.toLowerCase() != username.toLowerCase()
 					) {
 						const avatarUrl = contributor.avatar_url;
-						if (!userAvatars.includes(avatarUrl)) {
-							userAvatars.push(avatarUrl);
+						if (!Object.keys(userAvatars).includes(contributor.login)) {
+							userAvatars[contributor.login] = avatarUrl;
 							await fetchContributors(contributor);
 						}
 					}
@@ -87,26 +98,32 @@ async function fetchRepoDetails(repoId: string) {
 		.catch(err => console.error(err));
 }
 
-async function generateSVG(avatars: string[]): Promise<string> {
-	const maxAvatars = 50;
+async function generateSVG(avatars: { [key: string]: string }): Promise<string> {
+	const avatar_list = Object.keys(avatars);
+	const maxAvatars = 10;
 	const circleSize = 64;
 	const space = 10;
-	const svgWidth = (circleSize * Math.min(avatars.length, maxAvatars)) + space * (Math.min(avatars.length, maxAvatars) - 1);
+	const svgWidth = (circleSize * Math.min(avatar_list.length, maxAvatars)) + space * (Math.min(avatar_list.length, maxAvatars) - 1);
 	const svgHeight = circleSize;
 
 
-	const base64Avatars = await Promise.all(
-		avatars.slice(0, maxAvatars).map(async (avatar) => await imageUrlToBase64(avatar))
-	);
+	const base64Avatars: { [key: string]: string } = {};
 
-	const defs = base64Avatars
+	const promises = avatar_list.map(async (avatar) => {
+		const base64 = await imageUrlToBase64(avatars[avatar]);
+		base64Avatars[avatar] = base64;
+	});
+
+	await Promise.all(promises);
+
+	const defs = Object.keys(base64Avatars)
 		.map(
-			(base64, index) => `
+			(key, index) => `
             <pattern id="fill${index}" x="0" y="0" width="1" height="1" patternUnits="objectBoundingBox">
                 <image
                     width="${circleSize}"
                     height="${circleSize}"
-                    href="${base64}"
+                    href="${base64Avatars[key]}"
                 />
             </pattern>
         `
@@ -114,28 +131,30 @@ async function generateSVG(avatars: string[]): Promise<string> {
 		.join("\n");
 
 
-	const circles = base64Avatars
+	const circles = Object.keys(base64Avatars)
 		.map(
-			(_, index) => `
-            <circle
-                cx="${circleSize / 2 + index * (circleSize + space)}"
-                cy="${circleSize / 2}"
-                r="${circleSize / 2 - 1}"
-                fill="url(#fill${index})"
-            />
+			(key, index) => `
+			<a href="${contributors[key].url}" target="_blank" title="${contributors[key].login}">
+				<circle
+					cx="${circleSize / 2 + index * (circleSize + space)}"
+					cy="${circleSize / 2}"
+					r="${circleSize / 2 - 1}"
+					fill="url(#fill${index})"
+				/>
+			</a>
         `
 		)
 		.join("\n");
-
-
-	return `
+	
+	const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <defs>
         ${defs}
     </defs>
     ${circles}
 </svg>
-    `;
+    `
+	return svg;
 }
 
 import axios from "axios";
@@ -154,4 +173,4 @@ async function imageUrlToBase64(url: string): Promise<string> {
 }
 
 
-export { fetchRepos, fetchRepoDetails, generateSVG, repoIds, userAvatars, repoCount, username, contributors };
+export { fetchRepos, fetchRepoDetails, generateSVG, repoIds, userAvatars, repoCount, username, contributors, setExcepts };
